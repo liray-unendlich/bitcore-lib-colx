@@ -96,15 +96,18 @@
     "request": "browser-request"
   },
   "dependencies": {
+    "acorn-dynamic-import": "^4.0.0",
     "bn.js": "=2.0.4",
     "bs58": "=2.0.0",
     "buffer-compare": "=1.0.0",
     "elliptic": "=3.0.3",
     "inherits": "=2.0.1",
     "lodash": "=4.17.1",
+    "natives": "^1.1.6",
     "sha512": "=0.0.1"
   },
   "devDependencies": {
+    "bitcore-build": "https://github.com/bitpay/bitcore-build.git#1023e8a99cd42b9241ccafe8e34c52f308c10284",
     "browserify": "latest",
     "brfs": "^1.2.0",
     "chai": "^1.10.0",
