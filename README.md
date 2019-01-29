@@ -1,22 +1,19 @@
-bitcore-lib-colx
-================
+# bitcore-lib-phore
 
 Based on the good work of [https://github.com/agustinkassis/pivcore-lib], which is based on [https://github.com/dashevo/bitcore-lib-dash], which in turn is based on [https://github.com/bitpay/bitcore-lib].
 
 ## Principles
 
-
-ColossusXT (Colx) Coin: Extremely Resource Friendly Cryptocurrency, Lightning Fast, Completely Anonymous.
-Details: [https://colossusxt.org/]
+[Phore](https://phore.io) is a cutting edge cryptocurrency, with many features not available in most other cryptocurrencies.
 
 ## Get Started
 
 ```
-npm install bitcore-lib-colx
+npm install bitcore-lib-phore
 ```
 
 ```
-bower install bitcore-lib-colx
+bower install bitcore-lib-phore
 ```
 
 ## Documentation
@@ -30,16 +27,15 @@ To get community assistance and ask for help with implementation questions, plea
 
 ## Examples
 
-* [Generate a random address](https://github.com/bitpay/bitcore-lib/blob/master/docs/examples.md#generate-a-random-address)
-* [Generate a address from a SHA256 hash](https://github.com/bitpay/bitcore-lib/blob/master/docs/examples.md#generate-a-address-from-a-sha256-hash)
-* [Import an address via WIF](https://github.com/bitpay/bitcore-lib/blob/master/docs/examples.md#import-an-address-via-wif)
-* [Create a Transaction](https://github.com/bitpay/bitcore-lib/blob/master/docs/examples.md#create-a-transaction)
-* [Sign a COLX message](https://github.com/bitpay/bitcore-lib/blob/master/docs/examples.md#sign-a-bitcoin-message)
-* [Verify a COLX message](https://github.com/bitpay/bitcore-lib/blob/master/docs/examples.md#verify-a-bitcoin-message)
-* [Create an OP RETURN transaction](https://github.com/bitpay/bitcore-lib/blob/master/docs/examples.md#create-an-op-return-transaction)
-* [Create a 2-of-3 multisig P2SH address](https://github.com/bitpay/bitcore-lib/blob/master/docs/examples.md#create-a-2-of-3-multisig-p2sh-address)
-* [Spend from a 2-of-2 multisig P2SH address](https://github.com/bitpay/bitcore-lib/blob/master/docs/examples.md#spend-from-a-2-of-2-multisig-p2sh-address)
-
+- [Generate a random address](https://github.com/bitpay/bitcore-lib/blob/master/docs/examples.md#generate-a-random-address)
+- [Generate a address from a SHA256 hash](https://github.com/bitpay/bitcore-lib/blob/master/docs/examples.md#generate-a-address-from-a-sha256-hash)
+- [Import an address via WIF](https://github.com/bitpay/bitcore-lib/blob/master/docs/examples.md#import-an-address-via-wif)
+- [Create a Transaction](https://github.com/bitpay/bitcore-lib/blob/master/docs/examples.md#create-a-transaction)
+- [Sign a Phore message](https://github.com/bitpay/bitcore-lib/blob/master/docs/examples.md#sign-a-bitcoin-message)
+- [Verify a Phore message](https://github.com/bitpay/bitcore-lib/blob/master/docs/examples.md#verify-a-bitcoin-message)
+- [Create an OP RETURN transaction](https://github.com/bitpay/bitcore-lib/blob/master/docs/examples.md#create-an-op-return-transaction)
+- [Create a 2-of-3 multisig P2SH address](https://github.com/bitpay/bitcore-lib/blob/master/docs/examples.md#create-a-2-of-3-multisig-p2sh-address)
+- [Spend from a 2-of-2 multisig P2SH address](https://github.com/bitpay/bitcore-lib/blob/master/docs/examples.md#spend-from-a-2-of-2-multisig-p2sh-address)
 
 ## Security
 
@@ -53,19 +49,19 @@ Please send pull requests for bug fixes, code optimization, and ideas for improv
 
 ## Building the Browser Bundle
 
-To build a bitcore-lib-colx full bundle for the browser:
+To build a bitcore-lib-phore full bundle for the browser:
 
 ```sh
 gulp browser
 ```
 
-This will generate files named `bitcore-lib-colx.js` and `bitcore-lib-colx.min.js`.
+This will generate files named `bitcore-lib-phore.js` and `bitcore-lib-phore.min.js`.
 
 ## Development & Tests
 
 ```sh
-git clone https://github.com/deltaengine/bitcore-lib-colx
-cd bitcore-lib-colx
+git clone https://github.com/liray-unendlich/bitcore-lib-phore
+cd bitcore-lib-phore
 npm install
 ```
 

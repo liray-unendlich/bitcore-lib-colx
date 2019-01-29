@@ -1,23 +1,12 @@
 {
-  "name": "bitcore-lib-colx",
-  "main": "./bitcore-lib-colx.min.js",
+  "name": "bitcore-lib-phore",
+  "main": "./bitcore-lib-phore.min.js",
   "version": "0.15.3",
-  "homepage": "https://github.com/deltaengine/bitcore-lib-colx",
-  "authors": [
-    "Colx",
-    "BitPay, Inc."
-  ],
-  "description": "A pure, powerful core for your colx project.",
-  "moduleType": [
-    "globals"
-  ],
-  "keywords": [
-    "colx",
-    "bitcoin",
-    "bitcore",
-    "btc",
-    "satoshi"
-  ],
+  "homepage": "https://github.com/liray-unendlich/bitcore-lib-phore",
+  "authors": ["liray-unendlich", "BitPay, Inc."],
+  "description": "A pure, powerful core for your phore project.",
+  "moduleType": ["globals"],
+  "keywords": ["phore", "bitcoin", "bitcore", "btc", "satoshi"],
   "license": "MIT",
   "ignore": [
     "**/.*",

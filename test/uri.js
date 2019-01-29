@@ -1,257 +1,290 @@
-'use strict';
+"use strict";
 
-var chai = chai || require('chai');
-var bitcore = require('..');
+var chai = chai || require("chai");
+var bitcore = require("..");
 var expect = chai.expect;
 var Networks = bitcore.Networks;
 var should = chai.should();
 var URI = bitcore.URI;
 
-describe('URI', function() {
+describe("URI", function() {
   /* jshint maxstatements: 30 */
 
   // TODO: Split this and explain tests
-  it('parses uri strings correctly (test vector)', function() {
+  it("parses uri strings correctly (test vector)", function() {
     var uri;
 
-    URI.parse.bind(URI, 'badURI').should.throw(TypeError);
+    URI.parse.bind(URI, "badURI").should.throw(TypeError);
 
-    uri = URI.parse('colx:');
+    uri = URI.parse("phore:");
     expect(uri.address).to.be.undefined();
     expect(uri.amount).to.be.undefined();
     expect(uri.otherParam).to.be.undefined();
 
-    uri = URI.parse('colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG');
-    uri.address.should.equal('Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG');
+    uri = URI.parse("phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV");
+    uri.address.should.equal("PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV");
     expect(uri.amount).to.be.undefined();
     expect(uri.otherParam).to.be.undefined();
 
-    uri = URI.parse('colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG?amount=123.22');
-    uri.address.should.equal('Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG');
-    uri.amount.should.equal('123.22');
+    uri = URI.parse("phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV?amount=123.22");
+    uri.address.should.equal("PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV");
+    uri.amount.should.equal("123.22");
     expect(uri.otherParam).to.be.undefined();
 
-    uri = URI.parse('colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG?amount=123.22' +
-                    '&other-param=something&req-extra=param');
-    uri.address.should.equal('Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG');
-    uri.amount.should.equal('123.22');
-    uri['other-param'].should.equal('something');
-    uri['req-extra'].should.equal('param');
+    uri = URI.parse(
+      "phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV?amount=123.22" +
+        "&other-param=something&req-extra=param"
+    );
+    uri.address.should.equal("PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV");
+    uri.amount.should.equal("123.22");
+    uri["other-param"].should.equal("something");
+    uri["req-extra"].should.equal("param");
   });
 
   // TODO: Split this and explain tests
-  it('URIs can be validated statically (test vector)', function() {
-    URI.isValid('colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG').should.equal(true);
-    URI.isValid('colx:yRM2dX5HJyvbFaGubkVPio9W6Y8ELDnJrm').should.equal(true);
+  it("URIs can be validated statically (test vector)", function() {
+    URI.isValid("phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV").should.equal(true);
+    URI.isValid("phore:92aH9pF5s2st7z6TESDrpYCSY4PnMH6VzD").should.equal(true);
 
-    URI.isValid('colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG?amount=1.2')
-                .should.equal(true);
-    URI.isValid('colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG?amount=1.2&other=param')
-                .should.equal(true);
-    URI.isValid('colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG?amount=1.2&req-other=param',
-                ['req-other']).should.equal(true);
-    URI.isValid('colx:ySfKnKxK4S6TkVg6kyUEdXsoLPoCe4YdVp?amount=0.1&' +
-                'r=https%3A%2F%2Ftest.bitpay.com%2Fi%2F6DKgf8cnJC388irbXk5hHu').should.equal(true);
+    URI.isValid(
+      "phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV?amount=1.2"
+    ).should.equal(true);
+    URI.isValid(
+      "phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV?amount=1.2&other=param"
+    ).should.equal(true);
+    URI.isValid(
+      "phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV?amount=1.2&req-other=param",
+      ["req-other"]
+    ).should.equal(true);
+    URI.isValid(
+      "phore:ySfKnKxK4S6TkVg6kyUEdXsoLPoCe4YdVp?amount=0.1&" +
+        "r=https%3A%2F%2Ftest.bitpay.com%2Fi%2F6DKgf8cnJC388irbXk5hHu"
+    ).should.equal(true);
 
-    URI.isValid('colx:').should.equal(false);
-    URI.isValid('colx:badUri').should.equal(false);
-    URI.isValid('colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPH?amount=bad').should.equal(false);
-    URI.isValid('colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPH?amount=1.2&req-other=param')
-                .should.equal(false);
-    URI.isValid('colx:?r=https%3A%2F%2Ftest.bitpay.com%2Fi%2F6DKgf8cnJC388irbXk5hHu')
-                .should.equal(false);
+    URI.isValid("phore:").should.equal(false);
+    URI.isValid("phore:badUri").should.equal(false);
+    URI.isValid(
+      "phore:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPH?amount=bad"
+    ).should.equal(false);
+    URI.isValid(
+      "phore:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPH?amount=1.2&req-other=param"
+    ).should.equal(false);
+    URI.isValid(
+      "phore:?r=https%3A%2F%2Ftest.bitpay.com%2Fi%2F6DKgf8cnJC388irbXk5hHu"
+    ).should.equal(false);
   });
 
-  it('fails on creation with no params', function() {
-    (function(){
+  it("fails on creation with no params", function() {
+    (function() {
       return new URI();
-    }).should.throw(TypeError);
+    }.should.throw(TypeError));
   });
 
-  it('do not need new keyword', function() {
-    var uri = URI('colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG');
+  it("do not need new keyword", function() {
+    var uri = URI("phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV");
     uri.should.be.instanceof(URI);
   });
 
-  describe('instantiation from bitcoin uri', function() {
+  describe("instantiation from bitcoin uri", function() {
     /* jshint maxstatements: 25 */
     var uri;
 
-    it('parses address', function() {
-      uri = new URI('colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG');
+    it("parses address", function() {
+      uri = new URI("phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV");
       uri.address.should.be.instanceof(bitcore.Address);
       uri.network.should.equal(Networks.livenet);
     });
 
-    it('parses amount', function() {
-      uri = URI.fromString('colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG?amount=123.22');
-      uri.address.toString().should.equal('Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG');
+    it("parses amount", function() {
+      uri = URI.fromString(
+        "phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV?amount=123.22"
+      );
+      uri.address.toString().should.equal("PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV");
       uri.amount.should.equal(12322000000);
       expect(uri.otherParam).to.be.undefined();
     });
 
-    it('parses a testnet address', function() {
-      uri = new URI('colx:yRM2dX5HJyvbFaGubkVPio9W6Y8ELDnJrm');
+    it("parses a testnet address", function() {
+      uri = new URI("phore:92aH9pF5s2st7z6TESDrpYCSY4PnMH6VzD");
       uri.address.should.be.instanceof(bitcore.Address);
       uri.network.should.equal(Networks.testnet);
     });
 
     it('stores unknown parameters as "extras"', function() {
-      uri = new URI('colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG?amount=1.2&other=param');
+      uri = new URI(
+        "phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV?amount=1.2&other=param"
+      );
       uri.address.should.be.instanceof(bitcore.Address);
       expect(uri.other).to.be.undefined();
-      uri.extras.other.should.equal('param');
+      uri.extras.other.should.equal("param");
     });
 
-    it('throws error when a required feature is not supported', function() {
+    it("throws error when a required feature is not supported", function() {
       (function() {
-        return new URI('colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG?amount=1.2&other=param&req-required=param');
-      }).should.throw(Error);
+        return new URI(
+          "phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV?amount=1.2&other=param&req-required=param"
+        );
+      }.should.throw(Error));
     });
 
-    it('has no false negative when checking supported features', function() {
-      uri = new URI('colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG?amount=1.2&other=param&' +
-                    'req-required=param', ['req-required']);
+    it("has no false negative when checking supported features", function() {
+      uri = new URI(
+        "phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV?amount=1.2&other=param&" +
+          "req-required=param",
+        ["req-required"]
+      );
       uri.address.should.be.instanceof(bitcore.Address);
       uri.amount.should.equal(120000000);
-      uri.extras.other.should.equal('param');
-      uri.extras['req-required'].should.equal('param');
+      uri.extras.other.should.equal("param");
+      uri.extras["req-required"].should.equal("param");
     });
   });
 
   // TODO: Split this and explain tests
-  it('should create instance from object', function() {
+  it("should create instance from object", function() {
     /* jshint maxstatements: 25 */
     var uri;
 
     uri = new URI({
-      address: 'Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG'
+      address: "PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV"
     });
     uri.address.should.be.instanceof(bitcore.Address);
     uri.network.should.equal(Networks.livenet);
 
     uri = new URI({
-      address: 'yRM2dX5HJyvbFaGubkVPio9W6Y8ELDnJrm'
+      address: "92aH9pF5s2st7z6TESDrpYCSY4PnMH6VzD"
     });
     uri.address.should.be.instanceof(bitcore.Address);
     uri.network.should.equal(Networks.testnet);
 
     uri = new URI({
-      address: 'Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG',
+      address: "PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV",
       amount: 120000000,
-      other: 'param'
+      other: "param"
     });
     uri.address.should.be.instanceof(bitcore.Address);
     uri.amount.should.equal(120000000);
     expect(uri.other).to.be.undefined();
-    uri.extras.other.should.equal('param');
+    uri.extras.other.should.equal("param");
 
     (function() {
       return new URI({
-        address: 'Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG',
-        'req-required': 'param'
+        address: "PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV",
+        "req-required": "param"
       });
-    }).should.throw(Error);
+    }.should.throw(Error));
 
-    uri = new URI({
-      address: 'Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG',
-      amount: 120000000,
-      other: 'param',
-      'req-required': 'param'
-    }, ['req-required']);
+    uri = new URI(
+      {
+        address: "PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV",
+        amount: 120000000,
+        other: "param",
+        "req-required": "param"
+      },
+      ["req-required"]
+    );
     uri.address.should.be.instanceof(bitcore.Address);
     uri.amount.should.equal(120000000);
-    uri.extras.other.should.equal('param');
-    uri.extras['req-required'].should.equal('param');
+    uri.extras.other.should.equal("param");
+    uri.extras["req-required"].should.equal("param");
   });
 
-  it('should support double slash scheme', function() {
-    var uri = new URI('colx://Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG');
-    uri.address.toString().should.equal('Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG');
+  it("should support double slash scheme", function() {
+    var uri = new URI("phore://PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV");
+    uri.address.toString().should.equal("PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV");
   });
 
-  it('should input/output String', function() {
-    var str = 'colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG?' +
-              'message=Donation%20for%20project%20xyz&label=myLabel&other=xD';
-    URI.fromString(str).toString().should.equal(str);
+  it("should input/output String", function() {
+    var str =
+      "phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV?" +
+      "message=Donation%20for%20project%20xyz&label=myLabel&other=xD";
+    URI.fromString(str)
+      .toString()
+      .should.equal(str);
   });
 
-  it('should input/output JSON', function() {
+  it("should input/output JSON", function() {
     var json = JSON.stringify({
-      address: 'Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG',
-      message: 'Donation for project xyz',
-      label: 'myLabel',
-      other: 'xD'
+      address: "PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV",
+      message: "Donation for project xyz",
+      label: "myLabel",
+      other: "xD"
     });
     JSON.stringify(URI.fromObject(JSON.parse(json))).should.equal(json);
   });
 
-  it('should support numeric amounts', function() {
-    var uri = new URI('colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG?amount=12.10001');
+  it("should support numeric amounts", function() {
+    var uri = new URI(
+      "phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV?amount=12.10001"
+    );
     expect(uri.amount).to.be.equal(1210001000);
   });
 
-  it('should support extra arguments', function() {
-    var uri = new URI('colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG?' +
-                      'message=Donation%20for%20project%20xyz&label=myLabel&other=xD');
+  it("should support extra arguments", function() {
+    var uri = new URI(
+      "phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV?" +
+        "message=Donation%20for%20project%20xyz&label=myLabel&other=xD"
+    );
 
     should.exist(uri.message);
-    uri.message.should.equal('Donation for project xyz');
+    uri.message.should.equal("Donation for project xyz");
 
     should.exist(uri.label);
-    uri.label.should.equal('myLabel');
+    uri.label.should.equal("myLabel");
 
     should.exist(uri.extras.other);
-    uri.extras.other.should.equal('xD');
+    uri.extras.other.should.equal("xD");
   });
 
-  it('should generate a valid URI', function() {
+  it("should generate a valid URI", function() {
     new URI({
-      address: 'Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG',
-    }).toString().should.equal(
-      'colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG'
-    );
+      address: "PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV"
+    })
+      .toString()
+      .should.equal("phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV");
 
     new URI({
-      address: 'Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG',
+      address: "PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV",
       amount: 110001000,
-      message: 'Hello World',
-      something: 'else'
-    }).toString().should.equal(
-      'colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG?amount=1.10001&message=Hello%20World&something=else'
-    );
-
+      message: "Hello World",
+      something: "else"
+    })
+      .toString()
+      .should.equal(
+        "phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV?amount=1.10001&message=Hello%20World&something=else"
+      );
   });
 
-  it('should be case insensitive to protocol', function() {
-    var uri1 = new URI('colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG');
-    var uri2 = new URI('colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG');
+  it("should be case insensitive to protocol", function() {
+    var uri1 = new URI("phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV");
+    var uri2 = new URI("phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV");
 
     uri1.address.toString().should.equal(uri2.address.toString());
   });
 
   it('writes correctly the "r" parameter on string serialization', function() {
-    var originalString = 'colx:ySfKnKxK4S6TkVg6kyUEdXsoLPoCe4YdVp?amount=0.1&' +
-                         'r=https%3A%2F%2Ftest.bitpay.com%2Fi%2F6DKgf8cnJC388irbXk5hHu';
+    var originalString =
+      "phore:ySfKnKxK4S6TkVg6kyUEdXsoLPoCe4YdVp?amount=0.1&" +
+      "r=https%3A%2F%2Ftest.bitpay.com%2Fi%2F6DKgf8cnJC388irbXk5hHu";
     var uri = new URI(originalString);
     uri.toString().should.equal(originalString);
   });
 
-  it('displays nicely on the console (#inspect)', function() {
-    var uri = 'colx:Xo4vyw1FtA88rYPYjbNT9kwhVokHHsSuPG';
+  it("displays nicely on the console (#inspect)", function() {
+    var uri = "phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV";
     var instance = new URI(uri);
-    instance.inspect().should.equal('<URI: ' + uri + '>');
+    instance.inspect().should.equal("<URI: " + uri + ">");
   });
 
-  it('fails early when fromString isn\'t provided a string', function() {
+  it("fails early when fromString isn't provided a string", function() {
     expect(function() {
       return URI.fromString(1);
     }).to.throw();
   });
 
-  it('fails early when fromJSON isn\'t provided a valid JSON string', function() {
+  it("fails early when fromJSON isn't provided a valid JSON string", function() {
     expect(function() {
-      return URI.fromJSON('¹');
+      return URI.fromJSON("¹");
     }).to.throw();
   });
 });
