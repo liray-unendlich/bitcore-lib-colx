@@ -1,2 +1,2 @@
-var bitcoreTasks = require("bitcore-build-phore");
-bitcoreTasks("lib-phore");
+var bitcoreTasks = require("bitcore-build");
+bitcoreTasks("lib");
