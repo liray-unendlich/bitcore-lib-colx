@@ -17,7 +17,7 @@ describe("Networks", function() {
   it("will enable/disable regtest Network", function() {
     networks.enableRegtest();
     networks.testnet.networkMagic.should.deep.equal(
-      new Buffer("fcc1b7dc", "hex")
+      new Buffer("a1cf7eac", "hex")
     );
     networks.testnet.port.should.equal(11773);
     networks.testnet.dnsSeeds.should.deep.equal([]);
@@ -25,7 +25,7 @@ describe("Networks", function() {
 
     networks.disableRegtest();
     networks.testnet.networkMagic.should.deep.equal(
-      new Buffer("cee2caff", "hex")
+      new Buffer("477665ba", "hex")
     );
   });
 
@@ -100,12 +100,12 @@ describe("Networks", function() {
   });
 
   it("tests only for the specified key", function() {
-    expect(networks.get(0x8c, "pubkeyhash")).to.equal(networks.testnet);
-    expect(networks.get(0x8c, "privatekey")).to.equal(undefined);
+    expect(networks.get(0x8b, "pubkeyhash")).to.equal(networks.testnet);
+    expect(networks.get(0xdf, "privatekey")).to.equal(undefined);
   });
 
   it("can test for multiple keys", function() {
-    expect(networks.get(0x8c, ["pubkeyhash", "scripthash"])).to.equal(
+    expect(networks.get(0x8b, ["pubkeyhash", "scripthash"])).to.equal(
       networks.testnet
     );
     expect(networks.get(0x13, ["pubkeyhash", "scripthash"])).to.equal(
