@@ -104,7 +104,8 @@
     "inherits": "=2.0.1",
     "lodash": "=4.17.1",
     "natives": "^1.1.6",
-    "sha512": "=0.0.1"
+    "sha512": "=0.0.1",
+    "urequire": "^0.7.0-beta.33"
   },
   "devDependencies": {
     "bitcore-build": "https://github.com/bitpay/bitcore-build.git#1023e8a99cd42b9241ccafe8e34c52f308c10284",
