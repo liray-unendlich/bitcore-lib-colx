@@ -57,7 +57,7 @@ describe("URI", function() {
       ["req-other"]
     ).should.equal(true);
     URI.isValid(
-      "phore:ySfKnKxK4S6TkVg6kyUEdXsoLPoCe4YdVp?amount=0.1&" +
+      "phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV?amount=0.1&" +
         "r=https%3A%2F%2Ftest.bitpay.com%2Fi%2F6DKgf8cnJC388irbXk5hHu"
     ).should.equal(true);
 
@@ -264,7 +264,7 @@ describe("URI", function() {
 
   it('writes correctly the "r" parameter on string serialization', function() {
     var originalString =
-      "phore:ySfKnKxK4S6TkVg6kyUEdXsoLPoCe4YdVp?amount=0.1&" +
+      "phore:PB4RAjPm8QrRKXuPurYoD8o2Qik5kZrneV?amount=0.1&" +
       "r=https%3A%2F%2Ftest.bitpay.com%2Fi%2F6DKgf8cnJC388irbXk5hHu";
     var uri = new URI(originalString);
     uri.toString().should.equal(originalString);
