@@ -17,33 +17,31 @@ var BufferWriter = bitcore.encoding.BufferWriter;
 var Proposal = bitcore.GovObject.Proposal;
 var errors = bitcore.errors;
 
-// TODO: create Proposal from object
+var expectedHex = '7b22656e645f626c6f636b223a323539332c226e616d65223a225465737450726f706f73616c222c227061796d656e745f61646472657373223a227938596e4571364a666b31334672396b62414c5666754263466b36693842374e6766222c227061796d656e745f616d6f756e74223a3130302c2273746172745f626c6f636b223a313732382c2275726c223a2268747470733a2f2f70686f72652e696f227d';
 
+// TODO: create Proposal from object
 describe('Proposal', function() {
-  var startDate = Math.round(new Date("2015-10-10").getTime() / 1000);
-  var endDate = Math.round(new Date("2025-10-10").getTime() / 1000);
+  var startDate = 1728;
+  var endDate = 2593;
   var validJSONProposal = {
     network: "testnet",
-    name: "TestProposal",
-    start_epoch: startDate,
-    end_epoch: endDate,
-    payment_address: 'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh',
-    payment_amount: 10,
-    type: 1,
-    url: "http://www.dash.org"
+    name: "test",
+    start_block: startDate,
+    end_block: endDate,
+    payment_address: 'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf',
+    payment_amount: 100,
+    url: "https://phore.io"
   };
   it('should create new proposal', function() {
     var proposal = new Proposal();
-
     proposal.network = 'testnet';
-    proposal.end_epoch = endDate;
+    proposal.end_block = endDate;
     proposal.name = 'TestProposal';
-    proposal.payment_address = 'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh';
-    proposal.payment_amount = 10;
-    proposal.start_epoch = startDate;
-    proposal.type = 1;
-    proposal.url = "http://www.dash.org";
-
+    proposal.payment_address = 'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf';
+    proposal.payment_amount = 100;
+    proposal.start_block = startDate;
+    proposal.url = "https://phore.io";
+    
     proposal.serialize().should.equal(expectedHex);
   });
 
@@ -51,30 +49,28 @@ describe('Proposal', function() {
     var proposal = new Proposal();
 
     proposal.network = 'testnet';
-    proposal.end_epoch = 1477872000;
+    proposal.end_block = 1477872000;
     proposal.name = 'TestProposal';
-    proposal.payment_address = 'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh';
+    proposal.payment_address = 'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf';
     proposal.payment_amount = 10;
-    proposal.start_epoch = 'not a date'; // invalid date
-    proposal.type = 1;
-    proposal.url = "http://www.dash.org";
+    proposal.start_block = 'not a date'; // invalid date
+    proposal.url = "https://phore.io";
 
     expect(function() {
       return proposal.serialize();
-    }).to.throw(errors.GovObject.Proposal.start_epoch);
+    }).to.throw(errors.GovObject.Proposal.start_block);
 
   });
-  it('should throw error if end_epoch is invalid date', function() {
+  it('should throw error if end_block is invalid date', function() {
     var proposal = new Proposal();
 
     proposal.network = 'testnet';
-    proposal.end_epoch = 'not a date';
+    proposal.end_block = 'not a date';
     proposal.name = 'TestProposal';
-    proposal.payment_address = 'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh';
+    proposal.payment_address = 'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf';
     proposal.payment_amount = 10;
-    proposal.start_epoch = 1477872000;
-    proposal.type = 1;
-    proposal.url = "http://www.dash.org";
+    proposal.start_block = 1477872000;
+    proposal.url = "https://phore.io";
     var expectedErr = new errors.GovObject.Proposal.invalidDate();
     expect(proposal.getSerializationError().message).to.be.equal(expectedErr.message);
 
@@ -84,13 +80,12 @@ describe('Proposal', function() {
     var proposal = new Proposal();
 
     proposal.network = 'testnet';
-    proposal.end_epoch = 1472688000;
+    proposal.end_block = 1472688000;
     proposal.name = 'TestProposal';
-    proposal.payment_address = 'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh';
+    proposal.payment_address = 'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf';
     proposal.payment_amount = 10;
-    proposal.start_epoch = 1477872000;
-    proposal.type = 1;
-    proposal.url = "http://www.dash.org";
+    proposal.start_block = 1477872000;
+    proposal.url = "https://phore.io";
 
     expect(function() {
       return proposal.serialize();
@@ -98,38 +93,38 @@ describe('Proposal', function() {
 
   });
 
+  /*
   it('should throw error if end date < now', function() {
-    var start_epoch = Math.round(new Date('1/18/2014').getTime() / 1000);
-    var end_epoch = Math.round(new Date('3/25/2015').getTime() / 1000);
+    var start_block = Math.round(new Date('1/18/2014').getTime() / 1000);
+    var end_block = Math.round(new Date('3/25/2015').getTime() / 1000);
 
     var proposal = new Proposal();
 
     proposal.network = 'testnet';
-    proposal.end_epoch = end_epoch;
+    proposal.end_block = end_block;
     proposal.name = 'TestProposal';
-    proposal.payment_address = 'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh';
+    proposal.payment_address = 'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf';
     proposal.payment_amount = 10;
-    proposal.start_epoch = start_epoch;
-    proposal.type = 1;
-    proposal.url = "http://www.dash.org";
+    proposal.start_block = start_block;
+    proposal.url = "https://phore.io";
 
     expect(function() {
       return proposal.serialize();
     }).to.throw(errors.GovObject.Proposal.invalidDateWindow);
 
   });
-
+  */
+ 
   it('should throw error if payment address is invalid', function() {
     var proposal = new Proposal();
 
     proposal.network = 'testnet';
-    proposal.end_epoch = endDate;
+    proposal.end_block = endDate;
     proposal.name = 'TestProposal';
     proposal.payment_address = 'XmPtF6UoguyK'; // payment address must be > 26 characters
     proposal.payment_amount = 10;
-    proposal.start_epoch = startDate;
-    proposal.type = 1;
-    proposal.url = "http://www.dash.org";
+    proposal.start_block = startDate;
+    proposal.url = "https://phore.io";
 
     expect(function() {
       return proposal.serialize();
@@ -141,22 +136,20 @@ describe('Proposal', function() {
     var proposal = new Proposal();
 
     proposal.network = 'testnet';
-    proposal.end_epoch = endDate;
+    proposal.end_block = endDate;
     proposal.name = 'TestProposal';
-    proposal.payment_address = '8tS9fgiv8XAmTXxWqJBv7zbeS4jzrGGwxT';
+    proposal.payment_address = '8wMDo2WcoRqbY2vipcoTyU7KSmKqYdsnSQ';
     proposal.payment_amount = 10;
-    proposal.start_epoch = startDate;
-    proposal.type = 1;
-    proposal.url = "http://www.dash.org";
+    proposal.start_block = startDate;
+    proposal.url = "https://phore.io";
 
     var proposal2 = new Proposal();
     proposal2.network = 'livenet';
-    proposal2.end_epoch = endDate;
+    proposal2.end_block = endDate;
     proposal2.name = 'Proposal-36-DashATM';
-    proposal2.payment_address = '7Z7X2jaqMtzsr2oHpSn89cNaEC16DYByz3';
+    proposal2.payment_address = '6c6RAcBt7txf3UCk52n1syjsymT82ReVsF';
     proposal2.payment_amount = 1625.487;
-    proposal2.start_epoch = startDate;
-    proposal2.type = 1;
+    proposal2.start_block = startDate;
     proposal2.url = "https://www.dashcentral.org/p/Proposal-36-DashATM";
 
     expect(function() {
@@ -172,13 +165,12 @@ describe('Proposal', function() {
     var proposal = new Proposal();
 
     proposal.network = 'testnet';
-    proposal.end_epoch = endDate;
+    proposal.end_block = endDate;
     proposal.name = 'TestProposal';
-    proposal.payment_address = 'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh';
+    proposal.payment_address = 'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf';
     proposal.payment_amount = '';
-    proposal.start_epoch = startDate;
-    proposal.type = 1;
-    proposal.url = "http://www.dash.org";
+    proposal.start_block = startDate;
+    proposal.url = "https://phore.io";
 
     expect(function() {
       return proposal.serialize();
@@ -190,12 +182,11 @@ describe('Proposal', function() {
     var proposal = new Proposal();
 
     proposal.network = 'testnet';
-    proposal.end_epoch = endDate;
+    proposal.end_block = endDate;
     proposal.name = 'TestProposal';
-    proposal.payment_address = 'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh';
+    proposal.payment_address = 'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf';
     proposal.payment_amount = 10;
-    proposal.start_epoch = startDate;
-    proposal.type = 1;
+    proposal.start_block = startDate;
     proposal.url = "http";
 
     expect(function() {
@@ -208,13 +199,12 @@ describe('Proposal', function() {
     var proposal = new Proposal();
 
     proposal.network = 'testnet';
-    proposal.end_epoch = endDate;
+    proposal.end_block = endDate;
     proposal.name = 'Test Proposal';
-    proposal.payment_address = 'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh';
+    proposal.payment_address = 'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf';
     proposal.payment_amount = 10;
-    proposal.start_epoch = startDate;
-    proposal.type = 1;
-    proposal.url = "http://www.dash.org";
+    proposal.start_block = startDate;
+    proposal.url = "https://phore.io";
 
     expect(function() {
       return proposal.serialize();
@@ -224,12 +214,11 @@ describe('Proposal', function() {
     var jsonProposal = {
       network: "testnet",
       name: "TestProposal",
-      start_epoch: startDate,
-      end_epoch: endDate,
-      payment_address: 'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh',
-      payment_amount: 10,
-      type: 1,
-      url: "http://www.dash.org"
+      start_block: startDate,
+      end_block: endDate,
+      payment_address: 'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf',
+      payment_amount: 100,
+      url: "https://phore.io"
     };
     var proposal = new Proposal();
     proposal = proposal.fromObject(jsonProposal);
@@ -241,12 +230,11 @@ describe('Proposal', function() {
     var jsonProposal = {
       network: "testnet",
       name: "TestProposal",
-      start_epoch: startDate,
-      end_epoch: endDate,
-      payment_address: 'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh',
-      payment_amount: 10,
-      type: 1,
-      url: "http://www.dash.org"
+      start_block: startDate,
+      end_block: endDate,
+      payment_address: 'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf',
+      payment_amount: 100,
+      url: "https://phore.io"
     };
 
     var proposal = new Proposal();
@@ -278,12 +266,11 @@ describe('Proposal', function() {
   });
   it('should return error if property name is missing', function() {
     var jsonProposal = {
-      start_epoch: startDate,
-      end_epoch: endDate,
-      payment_address: 'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh',
+      start_block: startDate,
+      end_block: endDate,
+      payment_address: 'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf',
       payment_amount: 10,
-      type: 1,
-      url: "http://www.dash.org"
+      url: "https://phore.io"
     };
     var stringifiedJSON = JSON.stringify(jsonProposal);
     var proposal = new Proposal();
@@ -294,10 +281,10 @@ describe('Proposal', function() {
     expect(proposalRes).to.throw(Error);
     expect(proposalRes).to.throw('Must be a valid JSON - Property name missing');
   });
-  it('should return error if property start_epoch is missing', function() {
+  it('should return error if property start_block is missing', function() {
     //Cloning obj
     var jsonProposal = JSON.parse(JSON.stringify(validJSONProposal));
-    delete jsonProposal.start_epoch;
+    delete jsonProposal.start_block;
 
 
     var proposal = new Proposal();
@@ -306,12 +293,12 @@ describe('Proposal', function() {
     };
 
     expect(proposalRes).to.throw(Error);
-    expect(proposalRes).to.throw('Must be a valid JSON - Property start_epoch missing');
+    expect(proposalRes).to.throw('Must be a valid JSON - Property start_block missing');
   });
-  it('should return error if property end_epoch is missing', function() {
+  it('should return error if property end_block is missing', function() {
     //Cloning obj
     var jsonProposal = JSON.parse(JSON.stringify(validJSONProposal));
-    delete jsonProposal.end_epoch;
+    delete jsonProposal.end_block;
 
 
     var proposal = new Proposal();
@@ -320,7 +307,7 @@ describe('Proposal', function() {
     };
 
     expect(proposalRes).to.throw(Error);
-    expect(proposalRes).to.throw('Must be a valid JSON - Property end_epoch missing');
+    expect(proposalRes).to.throw('Must be a valid JSON - Property end_block missing');
   });
   it('should return error if property payment_address is missing', function() {
     //Cloning obj
@@ -350,6 +337,7 @@ describe('Proposal', function() {
     expect(proposalRes).to.throw(Error);
     expect(proposalRes).to.throw('Must be a valid JSON - Property payment_amount missing');
   });
+  /*
   it('should return error if property type is missing', function() {
     //Cloning obj
     var jsonProposal = JSON.parse(JSON.stringify(validJSONProposal));
@@ -364,6 +352,7 @@ describe('Proposal', function() {
     expect(proposalRes).to.throw(Error);
     expect(proposalRes).to.throw('Must be a valid JSON - Property type missing');
   });
+  */
   it('should return error if property url is missing', function() {
     //Cloning obj
     var jsonProposal = JSON.parse(JSON.stringify(validJSONProposal));
@@ -391,10 +380,10 @@ describe('Proposal', function() {
     expect(proposalRes).to.throw(Error);
     expect(proposalRes).to.throw('Must be a valid JSON - Expected property name to be a string received:number');
   });
-  it('should return error if property start_epoch is bad typed', function() {
+  it('should return error if property start_block is bad typed', function() {
     //Cloning obj
     var jsonProposal = JSON.parse(JSON.stringify(validJSONProposal));
-    jsonProposal.start_epoch = "1";
+    jsonProposal.start_block = "1";
 
     var proposal = new Proposal();
     var proposalRes = function() {
@@ -402,12 +391,12 @@ describe('Proposal', function() {
     };
 
     expect(proposalRes).to.throw(Error);
-    expect(proposalRes).to.throw('Must be a valid JSON - Expected property start_epoch to be a number received:string');
+    expect(proposalRes).to.throw('Must be a valid JSON - Expected property start_block to be a number received:string');
   });
-  it('should return error if property start_epoch is NaN', function() {
+  it('should return error if property start_block is NaN', function() {
     //Cloning obj
     var jsonProposal = JSON.parse(JSON.stringify(validJSONProposal));
-    jsonProposal.start_epoch = NaN;
+    jsonProposal.start_block = NaN;
 
     var proposal = new Proposal();
     var proposalRes = function() {
@@ -415,12 +404,12 @@ describe('Proposal', function() {
     };
 
     expect(proposalRes).to.throw(Error);
-    expect(proposalRes).to.throw('Must be a valid JSON - Expected property start_epoch to be a number');
+    expect(proposalRes).to.throw('Must be a valid JSON - Expected property start_block to be a number');
   });
-  it('should return error if property end_epoch is bad typed', function() {
+  it('should return error if property end_block is bad typed', function() {
     //Cloning obj
     var jsonProposal = JSON.parse(JSON.stringify(validJSONProposal));
-    jsonProposal.end_epoch = "1";
+    jsonProposal.end_block = "1";
 
     var proposal = new Proposal();
     var proposalRes = function() {
@@ -428,12 +417,12 @@ describe('Proposal', function() {
     };
 
     expect(proposalRes).to.throw(Error);
-    expect(proposalRes).to.throw('Must be a valid JSON - Expected property end_epoch to be a number received:string');
+    expect(proposalRes).to.throw('Must be a valid JSON - Expected property end_block to be a number received:string');
   });
-  it('should return error if property end_epoch is NaN', function() {
+  it('should return error if property end_block is NaN', function() {
     //Cloning obj
     var jsonProposal = JSON.parse(JSON.stringify(validJSONProposal));
-    jsonProposal.end_epoch = NaN;
+    jsonProposal.end_block = NaN;
 
     var proposal = new Proposal();
     var proposalRes = function() {
@@ -441,7 +430,7 @@ describe('Proposal', function() {
     };
 
     expect(proposalRes).to.throw(Error);
-    expect(proposalRes).to.throw('Must be a valid JSON - Expected property end_epoch to be a number');
+    expect(proposalRes).to.throw('Must be a valid JSON - Expected property end_block to be a number');
   });
   it('should return error if property payment_address is bad typed', function() {
     //Cloning obj
@@ -482,6 +471,7 @@ describe('Proposal', function() {
     expect(proposalRes).to.throw(Error);
     expect(proposalRes).to.throw('Must be a valid JSON - Expected property payment_amount to be a number');
   });
+  /*
   it('should return error if property type is bad typed', function() {
     //Cloning obj
     var jsonProposal = JSON.parse(JSON.stringify(validJSONProposal));
@@ -508,6 +498,7 @@ describe('Proposal', function() {
     expect(proposalRes).to.throw(Error);
     expect(proposalRes).to.throw('Must be a valid proposal type.');
   });
+  */
   it('should return error if property url is bad typed', function() {
     //Cloning obj
     var jsonProposal = JSON.parse(JSON.stringify(validJSONProposal));
@@ -530,7 +521,7 @@ describe('Proposal', function() {
     var proposal1 = new Proposal(datahex1);
     expect(proposal1.toString()).to.equal(datahex1);
     expect(proposal1.type).to.equal(1);
-    expect(proposal1.end_epoch).to.equal(1519848619);
+    expect(proposal1.end_block).to.equal(1519848619);
     expect(proposal1.payment_address).to.equal('yik5HAgVAgjH1oZKjcDfvcf22bwBNbSYzB');
     expect(proposal1.url).to.equal('https://www.dashcentral.org/p/test_proposal_1519097947');
 
@@ -538,7 +529,7 @@ describe('Proposal', function() {
     //We expect to be a different datahex2 as input is an object, and output will be an array (default).
     expect(proposal2.toString()).to.equal(datahex2_array);
     expect(proposal2.type).to.equal(1);
-    expect(proposal2.end_epoch).to.equal(1522947279);
+    expect(proposal2.end_block).to.equal(1522947279);
     expect(proposal2.payment_address).to.equal('ySaEYbbRqNj4PKbcB9uw6MPidHwoBBnhta');
     expect(proposal2.url).to.equal('https://ipfs.io/ipfs/QmY7KEmJKpx7bNDQ2WfDJp2zdsvX1ATZKWd4AXAhDLCaBM');
   })
@@ -553,4 +544,3 @@ describe('Proposal', function() {
 
   })
 });
-var expectedHex = '7b22656e645f65706f6368223a313736303035343430302c226e616d65223a225465737450726f706f73616c222c227061796d656e745f61646472657373223a22795847654e505158594658684c414e315a4b72416a787a7a426e5a324a5a4e4b6e68222c227061796d656e745f616d6f756e74223a31302c2273746172745f65706f6368223a313434343433353230302c2274797065223a312c2275726c223a22687474703a2f2f7777772e646173682e6f7267227d';
