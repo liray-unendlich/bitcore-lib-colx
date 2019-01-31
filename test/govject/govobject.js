@@ -16,6 +16,7 @@ var errors = bitcore.errors;
 
 var BufferReader = require('../../lib/encoding/bufferreader');
 
+var expectedHex = "7b22656e645f626c6f636b223a323539332c226e616d65223a225465737450726f706f73616c222c227061796d656e745f61646472657373223a227938596e4571364a666b31334672396b62414c5666754263466b36693842374e6766222c227061796d656e745f616d6f756e74223a3130302c2273746172745f626c6f636b223a313732382c2275726c223a2268747470733a2f2f70686f72652e696f227d";
 
 /* FromObject */
 describe('GovObject', function(){
@@ -27,12 +28,11 @@ describe('GovObject', function(){
       var jsonProposal = {
         network:"testnet",
         name:"TestProposal",
-        start_epoch:Math.round(new Date("2015-10-10").getTime()/1000),
-        end_epoch:Math.round(new Date("2025-10-10").getTime()/1000),
-        payment_address:'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh',
-        payment_amount:10,
-        type:1,
-        url:"http://www.dash.org"
+        start_block:1728,
+        end_block:2593,
+        payment_address:'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf',
+        payment_amount:100,
+        url:"https://phore.io"
       };
 
       govObject = govObject.fromObject(jsonProposal);
@@ -46,8 +46,8 @@ describe('GovObject', function(){
     })
     it('should validate address', function(){
       var govObject = new GovObject;
-      govObject._verifyAddress('yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh','testnet').should.equal(true);
-      govObject._verifyAddress('XuYDEzZzKxnknPDiVKe91sJaD1nQnnn5B6','livenet').should.equal(true);
+      govObject._verifyAddress('yBwNjsW4UQZyniGqb2H3xZL97g23G5485v','testnet').should.equal(true);
+      govObject._verifyAddress('PAtriqJauNxMz8m4TAP9aZxo1DSBLRHpue','livenet').should.equal(true);
       govObject._verifyAddress('XuYDEzZzKxn&&knPDiVKe91sJasfajkshfjD1nQnnn5B6','livenet').should.equal(false);
       govObject._verifyAddress('knPDiVKe91sJasfajkshfjD1nQnnn5B6','testnet').should.equal(false);
       govObject._verifyAddress('XuYDEzZzKxn&&knPDiVKe91sJa/sfajkshfjD1nQnnn5B6','livenet').should.equal(false);
@@ -58,23 +58,23 @@ describe('GovObject', function(){
       govObject._verifyAddress('yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh','livenet').should.equal(false);
       govObject._verifyAddress('XuYDEzZzKxnknPDiVKe91sJaD1nQnnn5B6','testnet').should.equal(false);
     })
+    // TODO: Fix this 
     it('should cast a stringified JSON Proposal into a Proposal Object', function(){
       var govObject = new GovObject;
       var jsonProposal = {
         network:"testnet",
         name:"TestProposal",
-        start_epoch:Math.round(new Date("2015-10-10").getTime()/1000),
-        end_epoch:Math.round(new Date("2025-10-10").getTime()/1000),
-        payment_address:'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh',
+        start_block:1728,
+        end_block:2593,
+        payment_address:'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf',
         payment_amount:10,
-        type:1,
-        url:"http://www.dash.org"
+        url:"https://phore.io"
       };
 
       var govObject = govObject.fromObject(JSON.stringify(jsonProposal));
 
       expect(govObject instanceof Proposal);
-
+      console.log(govObject);
       govObject.serialize().should.equal(expectedHex);
     })
     it('should shallowCopy a govObject if passed as arg', function(){
@@ -82,12 +82,11 @@ describe('GovObject', function(){
       var jsonProposal = {
         network:"testnet",
         name:"TestProposal",
-        start_epoch:Math.round(new Date("2015-10-10").getTime()/1000),
-        end_epoch:Math.round(new Date("2025-10-10").getTime()/1000),
-        payment_address:'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh',
+        start_block:2554,
+        end_block:11111,
+        payment_address:'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf',
         payment_amount:10,
-        type:1,
-        url:"http://www.dash.org"
+        url:"https://phore.io"
       };
       var govObject = govObject.fromObject(jsonProposal);
       var newGovObject = new GovObject(govObject);
@@ -110,12 +109,11 @@ describe('GovObject', function(){
       var jsonProposal = {
         network:"testnet",
         name:"TestProposal",
-        start_epoch:Math.round(new Date("2015-10-10").getTime()/1000),
-        end_epoch:Math.round(new Date("2025-10-10").getTime()/1000),
-        payment_address:'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh',
-        payment_amount:10,
-        type:1,
-        url:"http://www.dash.org"
+        start_block:1728,
+        end_block:2593,
+        payment_address:'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf',
+        payment_amount:100,
+        url:"https://phore.io"
       };
       var govObject = govObject.fromObject(jsonProposal);
 
@@ -124,7 +122,6 @@ describe('GovObject', function(){
       govFromBuffer.fromBuffer(govObject.toBuffer()).should.not.equal(govObject);
       new GovObject(govObject.toBuffer()).should.deep.equal(govObject);
       new GovObject(govObject.toBuffer()).should.not.equal(govObject);
-
 
       var reader = new BufferReader(govObject.toBuffer());
       var fromBuff =govFromBuffer.fromBufferReader(reader);
@@ -136,12 +133,11 @@ describe('GovObject', function(){
       var jsonProposal = {
         network:"testnet",
         name:"TestProposal",
-        start_epoch:Math.round(new Date("2015-10-10").getTime()/1000),
-        end_epoch:Math.round(new Date("2025-10-10").getTime()/1000),
-        payment_address:'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh',
-        payment_amount:10,
-        type:1,
-        url:"http://www.dash.org"
+        start_block:1728,
+        end_block:2593,
+        payment_address:'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf',
+        payment_amount:100,
+        url:"https://phore.io"
       };
       var govObject = govObject.fromObject(jsonProposal);
       var govObject2 = new GovObject;
@@ -158,12 +154,11 @@ describe('GovObject', function(){
       var jsonProposal = {
         network:"testnet",
         name:"TestProposal",
-        start_epoch:Math.round(new Date("2015-10-10").getTime()/1000),
-        end_epoch:Math.round(new Date("2025-10-10").getTime()/1000),
-        payment_address:'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh',
-        payment_amount:10,
-        type:1,
-        url:"http://www.dash.org"
+        start_block:1728,
+        end_block:2593,
+        payment_address:'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf',
+        payment_amount:100,
+        url:"https://phore.io"
       };
       var govObject = govObject.fromObject(jsonProposal);
       var govFromHexa = new GovObject;
@@ -179,12 +174,11 @@ describe('GovObject', function(){
       var jsonProposal = {
         network:"testnet",
         name:"TestProposal",
-        start_epoch:Math.round(new Date("2015-10-10").getTime()/1000),
-        end_epoch:Math.round(new Date("2025-10-10").getTime()/1000),
-        payment_address:'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh',
-        payment_amount:10,
-        type:1,
-        url:"http://www.dash.org"
+        start_block:1728,
+        end_block:2593,
+        payment_address:'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf',
+        payment_amount:100,
+        url:"https://phore.io"
       };
       var stringified = JSON.stringify(jsonProposal);
       stringified+="foobar";
@@ -196,64 +190,7 @@ describe('GovObject', function(){
        expect(govObjectRes).to.throw(Error);
        expect(govObjectRes).to.throw('Must be a valid stringified JSON');
     })
-    it('should return error if property type is not defined',function(){
-      var govObject = new GovObject;
-      var jsonProposal = {
-        network:"testnet",
-        name:"TestProposal",
-        start_epoch:Math.round(new Date("2015-10-10").getTime()/1000),
-        end_epoch:Math.round(new Date("2025-10-10").getTime()/1000),
-        payment_address:'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh',
-        payment_amount:10,
-        url:"http://www.dash.org"
-      };
 
-       var govObjRes = function(){
-         return govObject.fromObject(jsonProposal);
-       };
-
-       expect(govObjRes).to.throw(Error);
-       expect(govObjRes).to.throw('Must be a valid JSON - Property type missing');
-    });
-    it('should return error if property type is bad typed',function(){
-      var govObject = new GovObject;
-      var jsonProposal = {
-        network:"testnet",
-        name:"TestProposal",
-        type:"foobar",
-        start_epoch:Math.round(new Date("2015-10-10").getTime()/1000),
-        end_epoch:Math.round(new Date("2025-10-10").getTime()/1000),
-        payment_address:'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh',
-        payment_amount:10,
-        url:"http://www.dash.org"
-      };
-
-       var govObjRes = function(){
-         return govObject.fromObject(jsonProposal);
-       };
-
-       expect(govObjRes).to.throw(Error);
-       expect(govObjRes).to.throw('Must be a valid JSON - Expected property type to be a number received:string');
-    });
-    it('should return error if govObject type is not handled',function(){
-      var govObject = new GovObject;
-      var jsonProposal = {
-        network:"testnet",
-        name:"TestProposal",
-        type:42,
-        start_epoch:Math.round(new Date("2015-10-10").getTime()/1000),
-        end_epoch:Math.round(new Date("2025-10-10").getTime()/1000),
-        payment_address:'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh',
-        payment_amount:10,
-        url:"http://www.dash.org"
-      };
-       var govObjRes = function(){
-         return govObject.fromObject(jsonProposal);
-       };
-
-       expect(govObjRes).to.throw(Error);
-       expect(govObjRes).to.throw('Unhandled GovObject type');
-    });
     it('should output null data-hex value by default', function(){
       var govObject = new GovObject;
       expect(govObject.dataHex()).to.be.null;
@@ -271,12 +208,11 @@ describe('GovObject', function(){
       var jsonProposal = {
         network:"testnet",
         name:"TestProposal",
-        start_epoch:Math.round(new Date("2015-10-10").getTime()/1000),
-        end_epoch:Math.round(new Date("2025-10-10").getTime()/1000),
-        payment_address:'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh',
-        payment_amount:10,
-        type:1,
-        url:"http://www.dash.org"
+        start_block:1728,
+        end_block:2593,
+        payment_address:'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf',
+        payment_amount:100,
+        url:"https://phore.io"
       };
       var govObject = govObject.fromObject(jsonProposal);
       govObject.serialize().should.equal(expectedHex);
@@ -287,12 +223,11 @@ describe('GovObject', function(){
       var jsonProposal = {
         network:"testnet",
         name:"TestProposal",
-        start_epoch:Math.round(new Date("2015-10-10").getTime()/1000),
-        end_epoch:Math.round(new Date("2025-10-10").getTime()/1000),
-        payment_address:'yXGeNPQXYFXhLAN1ZKrAjxzzBnZ2JZNKnh',
-        payment_amount:10,
-        type:1,
-        url:"http://www.dash.org"
+        start_block:1728,
+        end_block:2593,
+        payment_address:'y8YnEq6Jfk13Fr9kbALVfuBcFk6i8B7Ngf',
+        payment_amount:100,
+        url:"https://phore.io"
       };
       var govObject = govObject.fromObject(jsonProposal);
       govObject.inspect().should.equal("<GovObject: "+expectedHex+">");
@@ -302,7 +237,7 @@ describe('GovObject', function(){
 
   });
 });
-var expectedHex = "7b22656e645f65706f6368223a313736303035343430302c226e616d65223a225465737450726f706f73616c222c227061796d656e745f61646472657373223a22795847654e505158594658684c414e315a4b72416a787a7a426e5a324a5a4e4b6e68222c227061796d656e745f616d6f756e74223a31302c2273746172745f65706f6368223a313434343433353230302c2274797065223a312c2275726c223a22687474703a2f2f7777772e646173682e6f7267227d";
+
 //Polyfill for object.assign (not supported in 0.10.25);
 Object._assign = function (target, varArgs) { // .length of function is 2
   'use strict';
