@@ -46,15 +46,20 @@ bitcore.Address = require("./lib/address");
 bitcore.Block = require("./lib/block");
 bitcore.MerkleBlock = require("./lib/block/merkleblock");
 bitcore.BlockHeader = require("./lib/block/blockheader");
+
 // TODO: delete all HD Private key features
 bitcore.HDPrivateKey = require("./lib/hdprivatekey.js");
 bitcore.HDPublicKey = require("./lib/hdpublickey.js");
+
 bitcore.Networks = require("./lib/networks");
 bitcore.Opcode = require("./lib/opcode");
 bitcore.PrivateKey = require("./lib/privatekey");
 bitcore.PublicKey = require("./lib/publickey");
 bitcore.Script = require("./lib/script");
 bitcore.Transaction = require("./lib/transaction");
+// TODO: Budget system is working
+bitcore.GovObject = require('./lib/govobject');
+
 bitcore.URI = require("./lib/uri");
 bitcore.Unit = require("./lib/unit");
 bitcore.Message = require("./lib/message");
